@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2021.1 (Build 215U)" ts="2021-11-04 22:42:56">
+<Project name="EnsExportProduction_2021-11-04 22-42-40_684+2" LastModified="2021-11-04 22:42:56.046003">
+  <ProjectDescription>Studio Project generated from Production 'User.RESTProd' at 2021-11-04 20:42:40.684 UTC</ProjectDescription>
+  <Items>
+    <ProjectItem name="User.Operation" type="CLS"></ProjectItem>
+    <ProjectItem name="User.RESTComponents" type="CLS"></ProjectItem>
+    <ProjectItem name="User.RESTProd" type="CLS"></ProjectItem>
+    <ProjectItem name="User.RESTService" type="CLS"></ProjectItem>
+    <ProjectItem name="EnsExportNotes.EnsExportProduction_2021-11-04 22-42-40_684+2.PTD" type="PTD"></ProjectItem>
+  </Items>
+</Project>
+
+
+<Class name="User.Operation">
+<Super>Ens.BusinessOperation</Super>
+<TimeChanged>66052,52589.921396</TimeChanged>
+<TimeCreated>66052,52589.921396</TimeCreated>
+</Class>
+
+
+<Class name="User.RESTComponents">
+<Super>%Persistent</Super>
+<TimeChanged>66050,82022.668002</TimeChanged>
+<TimeCreated>66048,77264.542298</TimeCreated>
+
+<Index name="MessageIndex">
+<Description>
+Description</Description>
+<Properties>SessionId</Properties>
+<Unique>1</Unique>
+</Index>
+
+<Property name="Time">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="SessionId">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Property name="AlertText">
+<Type>%String</Type>
+<Required>1</Required>
+</Property>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^User.RESTComponentsD</DataLocation>
+<DefaultData>RESTComponentsDefaultData</DefaultData>
+<IdLocation>^User.RESTComponentsD</IdLocation>
+<IndexLocation>^User.RESTComponentsI</IndexLocation>
+<StreamLocation>^User.RESTComponentsS</StreamLocation>
+<Data name="RESTComponentsDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Time</Value>
+</Value>
+<Value name="3">
+<Value>SessionId</Value>
+</Value>
+<Value name="4">
+<Value>AlertText</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="User.RESTProd">
+<Super>Ens.Production</Super>
+<TimeChanged>66052,53159.025123</TimeChanged>
+<TimeCreated>66052,49921.021697</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="User.RESTProd" TestingEnabled="true" LogGeneralTraceEvents="false">
+  <Description></Description>
+  <ActorPoolSize>2</ActorPoolSize>
+  <Item Name="REST_BS" Category="" ClassName="User.RESTService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="REST_BO" Category="" ClassName="User.Operation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="User.RESTService">
+<Super>Ens.BusinessService</Super>
+<TimeChanged>66052,52570.194592</TimeChanged>
+<TimeCreated>66052,52570.194592</TimeCreated>
+
+<Method name="GetJSONData">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%DynamicObject</ReturnType>
+<Implementation><![CDATA[
+	Try{
+		Do %request.Content.Rewind()
+		Set rq = ""
+		While (%request.Content.AtEnd = 0){
+			Set len = 1000
+			Set rq = %request.Content.Read(.len)
+		}
+		$$$TRACE("rq = " )
+		Set obj = ##class(%DynamicObject).%FromJSON(%request.Content)
+	} Catch ex {
+			Throw ##class(User.BadRequest).%New("Invalid JSON")
+		}
+	Quit obj
+]]></Implementation>
+</Method>
+
+<Method name="OpenRESTComponents">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>User.RESTComponents</ReturnType>
+<Implementation><![CDATA[
+	Set obj = ##class(User.RESTComponents).SessionId(id)
+	If '$IsObject(obj){
+			Throw ##class(User.NotFound).%New("Not found")
+		}
+]]></Implementation>
+</Method>
+
+<Method name="CreateData">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>input:%DynamicObject,id:%String=##class(%PopulateUtils).String(5)</FormalSpec>
+<Implementation><![CDATA[
+	Set data = ##class(User.RESTComponents).%New()
+	Set data.SessionId = id
+	Set status = data.%Save()
+	If $$$ISERR(status) {
+		Throw ##class(%Exception.StatusException).CreateFromStatus(status)
+	}
+]]></Implementation>
+</Method>
+</Class>
+
+
+<Document name="EnsExportNotes.EnsExportProduction_2021-11-04 22-42-40_684+2.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportProduction_2021-11-04 22-42-40_684+2" description="Export Notes for export EnsExportProduction_2021-11-04 22-42-40_684+2">
+<![CDATA[<Deployment>
+<Creation>
+<Machine>JUUSO-PC</Machine>
+<Instance>TEAM_1</Instance>
+<Namespace>AMK</Namespace>
+<SourceProduction>User.RESTProd</SourceProduction>
+<Username>SuperUser</Username>
+<UTC>2021-11-04 20:42:56.044</UTC>
+</Creation>
+<Notes>
+</Notes>
+<Contents>
+<ExportProject>EnsExportProduction_2021-11-04 22-42-40_684+2</ExportProject>
+<Item num="1">User.Operation.CLS</Item>
+<Item num="2">User.RESTComponents.CLS</Item>
+<Item num="3">User.RESTProd.CLS</Item>
+<Item num="4">User.RESTService.CLS</Item>
+</Contents>
+<ProductionClassInExport>User.RESTProd</ProductionClassInExport>
+</Deployment>
+
+]]></ProjectTextDocument>
+</Document></Export>

@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2021.1 (Build 215U)" ts="2021-11-04 22:38:15">
+<Class name="AMKPKG.Ens.AlertRoutingRule">
+<Description>
+</Description>
+<Super>Ens.Rule.Definition</Super>
+<TimeChanged>66048,314.77337</TimeChanged>
+<TimeCreated>66023,76641.075429</TimeCreated>
+
+<Parameter name="RuleAssistClass">
+<Default>EnsLib.MsgRouter.RuleAssist</Default>
+</Parameter>
+
+<XData name="RuleDefinition">
+<XMLNamespace>http://www.intersystems.com/rule</XMLNamespace>
+<Data><![CDATA[
+<ruleDefinition alias="" context="EnsLib.MsgRouter.RoutingEngine" production="AMKPKG.FoundationProduction">
+<ruleSet name="" effectiveBegin="" effectiveEnd="">
+<rule name="">
+<when condition="1">
+<send transform="User.DataTransformation" target="ToPushOver"></send>
+</when>
+</rule>
+</ruleSet>
+</ruleDefinition>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="AMKPKG.FoundationProduction">
+<ProcedureBlock>0</ProcedureBlock>
+<Super>Ens.Production</Super>
+<TimeChanged>66052,50042.761804</TimeChanged>
+<TimeCreated>66021,55959.97359</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="AMKPKG.FoundationProduction" TestingEnabled="true" LogGeneralTraceEvents="false">
+  <Description></Description>
+  <ActorPoolSize>1</ActorPoolSize>
+  <Item Name="FromFileGenerator" Category="" ClassName="MIT.Service.Util.FileGenerator" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="ContentMaxLen">2</Setting>
+    <Setting Target="Host" Name="Directory">E:\InterSystems\Team_1\mgr\AMK\In</Setting>
+    <Setting Target="Host" Name="WaitTimeMax">15</Setting>
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+  </Item>
+  <Item Name="Business_Service" Category="" ClassName="EnsLib.File.PassthroughService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+    <Setting Target="Adapter" Name="ArchivePath">E:\InterSystems\Team_1\mgr\AMK\Archive_Work\</Setting>
+    <Setting Target="Adapter" Name="CallInterval">15</Setting>
+    <Setting Target="Adapter" Name="FilePath">E:\InterSystems\Team_1\mgr\AMK\In\</Setting>
+    <Setting Target="Adapter" Name="FileSpec">*.txt</Setting>
+    <Setting Target="Adapter" Name="WorkPath">E:\InterSystems\Team_1\mgr\AMK\Archive_Work\</Setting>
+    <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
+  </Item>
+  <Item Name="Router" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BusinessRuleName">AMKPKG.RouterRoutingRule</Setting>
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+  </Item>
+  <Item Name="Business_Operation" Category="" ClassName="EnsLib.File.PassthroughOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+    <Setting Target="Host" Name="Filename">%f</Setting>
+    <Setting Target="Adapter" Name="FilePath">E:\InterSystems\Team_1\mgr\AMK\Out\</Setting>
+  </Item>
+  <Item Name="Ens.Alert" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BusinessRuleName">AMKPKG.Ens.AlertRoutingRule</Setting>
+  </Item>
+  <Item Name="ToPushOver" Category="" ClassName="User.PushOver" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+    <Setting Target="Adapter" Name="HTTPServer">https://api.pushover.net/1/messages.json</Setting>
+    <Setting Target="Adapter" Name="SSLCheckServerIdentity">0</Setting>
+    <Setting Target="Adapter" Name="SSLConfig">Pushover</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="AMKPKG.RouterRoutingRule">
+<Description>
+</Description>
+<Super>Ens.Rule.Definition</Super>
+<TimeChanged>66030,59379.879</TimeChanged>
+<TimeCreated>66021,80404.678203</TimeCreated>
+
+<Parameter name="RuleAssistClass">
+<Default>EnsLib.MsgRouter.RuleAssist</Default>
+</Parameter>
+
+<XData name="RuleDefinition">
+<XMLNamespace>http://www.intersystems.com/rule</XMLNamespace>
+<Data><![CDATA[
+<ruleDefinition alias="" context="EnsLib.MsgRouter.RoutingEngine" production="AMKPKG.FoundationProduction">
+<ruleSet name="" effectiveBegin="" effectiveEnd="">
+<rule name="">
+<when condition="1">
+<send transform="" target="Business_Operation"></send>
+</when>
+</rule>
+</ruleSet>
+</ruleDefinition>
+]]></Data>
+</XData>
+</Class>
+
+
+<Project name="EnsExportProduction_2021-11-04 22-37-40_145+2" LastModified="2021-11-04 22:38:15.792226">
+  <ProjectDescription>Studio Project generated from Production 'AMKPKG.FoundationProduction' at 2021-11-04 20:37:40.145 UTC</ProjectDescription>
+  <Items>
+    <ProjectItem name="AMKPKG.Ens.AlertRoutingRule" type="CLS"></ProjectItem>
+    <ProjectItem name="AMKPKG.FoundationProduction" type="CLS"></ProjectItem>
+    <ProjectItem name="AMKPKG.RouterRoutingRule" type="CLS"></ProjectItem>
+    <ProjectItem name="MIT.Service.Util.FileGenerator" type="CLS"></ProjectItem>
+    <ProjectItem name="User.DataTransformation" type="CLS"></ProjectItem>
+    <ProjectItem name="User.PushOver" type="CLS"></ProjectItem>
+    <ProjectItem name="User.PushOverComponents" type="CLS"></ProjectItem>
+    <ProjectItem name="EnsExportNotes.EnsExportProduction_2021-11-04 22-37-40_145+2.PTD" type="PTD"></ProjectItem>
+  </Items>
+</Project>
+
+
+<Class name="MIT.Service.Util.FileGenerator">
+<Copyright>/* 
+Utility Business Service for Turku AMK Exercises 2020 by 2M-IT.
+
+Version 1.0 / ES / Initial release
+Version 1.1 / ES / Added configurable random wait time for file creation
+
+*/</Copyright>
+<Description><![CDATA[
+Upon every invocation of the service, it creates a new file with a randomized name and content.
+It is used for creating new dummy files for testing purposes.
+Depends on <class>MIT.Util</class> for creating the file.]]></Description>
+<Super>Ens.BusinessService,MIT.Util</Super>
+<TimeChanged>65687,36712.196891</TimeChanged>
+<TimeCreated>65686,66402.653945</TimeCreated>
+
+<Parameter name="ADAPTER">
+<Default>Ens.InboundAdapter</Default>
+</Parameter>
+
+<Property name="Directory">
+<Description>
+Directory where the files are created. Must be configured properly before use. </Description>
+<Type>%String</Type>
+<InitialExpression>"C:\"</InitialExpression>
+<Parameter name="MAXLEN" value="1000"/>
+</Property>
+
+<Property name="ContentMaxLen">
+<Description>
+Limits the randomized content generated into the file by this many characters. </Description>
+<Type>%Integer</Type>
+<InitialExpression>100</InitialExpression>
+</Property>
+
+<Property name="WaitTimeMin">
+<Description>
+Minimum amount of seconds to wait for the next creation of a new file</Description>
+<Type>%Integer</Type>
+<InitialExpression>1</InitialExpression>
+</Property>
+
+<Property name="WaitTimeMax">
+<Description>
+Maximum amount of seconds to wait for the next creation of a new file</Description>
+<Type>%Integer</Type>
+<InitialExpression>10000</InitialExpression>
+</Property>
+
+<Parameter name="SETTINGS">
+<Default>Directory:Basic:directorySelector,ContentMaxLen:Basic,WaitTimeMin:Basic,WaitTimeMax:Basic</Default>
+</Parameter>
+
+<Method name="OnProcessInput">
+<FormalSpec>pInput:%RegisteredObject,*pOutput:%RegisteredObject</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+
+	// Check the settings
+	If ..WaitTimeMin = "" Quit $$$ERROR($$$GeneralError, "WaitTimeMin not configured")
+	If ..WaitTimeMax = "" Quit $$$ERROR($$$GeneralError, "WaitTimeMax not configured")
+
+	// Generate a new file
+	Set tSC = ..GenerateFile(..Directory, ..ContentMaxLen, .tResult)
+
+	If '$$$ISERR(tSC){
+		$$$LOGINFO("Created file: "_tResult)
+
+		// Wait for a random period on seconds.
+		// Know issue: Implemented with hang, which causes Management Portal to "Force update" when this Busienss Service is being disabled or restarted
+		Set tWaitTime = ##class(%PopulateUtils).Integer(..WaitTimeMin,..WaitTimeMax)
+		$$$LOGINFO("Waiting "_tWaitTime_" seconds")
+		hang tWaitTime
+	}
+
+	Quit tSC
+]]></Implementation>
+</Method>
+</Class>
+
+
+<Class name="User.DataTransformation">
+<Super>Ens.DataTransformDTL</Super>
+<TimeChanged>66048,283.517247</TimeChanged>
+<TimeCreated>66048,249.383686</TimeCreated>
+<DependsOn>Ens.AlertRequest,User.PushOverComponents</DependsOn>
+
+<Parameter name="IGNOREMISSINGSOURCE">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="REPORTERRORS">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="TREATEMPTYREPEATINGFIELDASNULL">
+<Default>0</Default>
+</Parameter>
+
+<XData name="DTL">
+<XMLNamespace>http://www.intersystems.com/dtl</XMLNamespace>
+<Data><![CDATA[
+<transform sourceClass='Ens.AlertRequest' targetClass='User.PushOverComponents' create='new' language='objectscript' >
+<assign value='source.AlertTime' property='target.Time' action='set' />
+<assign value='source.SessionId' property='target.SessionId' action='set' />
+<assign value='source.AlertText' property='target.AlertText' action='set' />
+</transform>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="User.PushOver">
+<Super>Ens.BusinessOperation</Super>
+<TimeChanged>66027,56873.100931</TimeChanged>
+<TimeCreated>66023,79656.833075</TimeCreated>
+
+<Parameter name="ADAPTER">
+<Default>EnsLib.HTTP.OutboundAdapter</Default>
+</Parameter>
+
+<Property name="Adapter">
+<Type>EnsLib.HTTP.OutboundAdapter</Type>
+</Property>
+
+<Parameter name="INVOCATION">
+<Default>Queue</Default>
+</Parameter>
+
+<Method name="OnAlert">
+<FormalSpec>pReq:User.PushOverComponents,*pResp:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    
+        Set Message =##class(%FileCharacterStream).%New()
+        Set Message.FileName="E:\InterSystems\Team_1\mgr\AMK\Alert\Alerts_2021-10-06.txt"
+        While 'stream.AtEnd {
+	        Set line=Message.ReadLine()}
+	        Do Message.Close()
+        
+        Set title = "Is test"
+        
+        Set httprequest = ##class(%Net.HttpRequest).%New()
+        
+        Set httprequest.SSLConfiguration = "Pushover"
+        
+        Set httprequest.Https = $$$YES
+        
+        Set httprequest.Server = "api.pushover.net"
+        
+        Set httprequest.Location = "/1/messages.json"
+        
+        Set httprequest.ContentType = "application/x-www-form-urlencoded"
+        
+        Do httprequest.SetParam("token","axs8abm837y6x6ghzm8ateq1fd7bfd")
+        
+        Do httprequest.SetParam("user","u5d2491xhnesvkq7bjpagm5nqshd6s")
+        
+        Do httprequest.SetParam("device","Black7")
+        
+        Do httprequest.SetParam("title",title)
+        
+        Do httprequest.SetParam("html",1)
+        
+        Do httprequest.SetParam("message",Message)
+        
+        Do httprequest.Post(,0)
+        
+        set stream = httprequest.HttpResponse.Data
+            
+        while 'stream.AtEnd {
+                Set pResp = stream.Read($$$MaxStringLength)
+        }
+    
+    Quit $$$OK
+]]></Implementation>
+</Method>
+
+<XData name="MessageMap">
+<Data><![CDATA[
+<MapItems>
+    <MapItem MessageType="User.PushOverComponents"> 
+        <Method>OnAlert</Method>
+    </MapItem>
+</MapItems>
+]]></Data>
+</XData>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^User.PushOverD</DataLocation>
+<DefaultData>PushOverDefaultData</DefaultData>
+<IdLocation>^User.PushOverD</IdLocation>
+<IndexLocation>^User.PushOverI</IndexLocation>
+<StreamLocation>^User.PushOverS</StreamLocation>
+<Data name="PushOverDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Adapter</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="User.PushOverComponents">
+<Super>%Persistent</Super>
+<TimeChanged>66025,65270.865949</TimeChanged>
+<TimeCreated>66023,79658.059596</TimeCreated>
+
+<Property name="Time">
+<Type>%TimeStamp</Type>
+</Property>
+
+<Property name="SessionId">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="AlertText">
+<Type>%String</Type>
+<Parameter name="MAXLEN" value="50"/>
+<Parameter name="TRUNCATE" value="1"/>
+</Property>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^User.PushOverComponentsD</DataLocation>
+<DefaultData>PushOverComponentsDefaultData</DefaultData>
+<IdLocation>^User.PushOverComponentsD</IdLocation>
+<IndexLocation>^User.PushOverComponentsI</IndexLocation>
+<StreamLocation>^User.PushOverComponentsS</StreamLocation>
+<Data name="PushOverComponentsDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>SiteName</Value>
+</Value>
+<Value name="3">
+<Value>ServerName</Value>
+</Value>
+<Value name="4">
+<Value>ServerId</Value>
+</Value>
+<Value name="5">
+<Value>ProductionName</Value>
+</Value>
+<Value name="6">
+<Value>EventDateTime</Value>
+</Value>
+<Value name="7">
+<Value>EventCode</Value>
+</Value>
+<Value name="8">
+<Value>EventItem</Value>
+</Value>
+<Value name="9">
+<Value>EventCodeId</Value>
+</Value>
+<Value name="10">
+<Value>EventDescription</Value>
+</Value>
+<Value name="11">
+<Value>EventValue</Value>
+</Value>
+<Value name="12">
+<Value>EventValueUnits</Value>
+</Value>
+<Value name="13">
+<Value>EventSD25</Value>
+</Value>
+<Value name="14">
+<Value>EventAlertValue</Value>
+</Value>
+<Value name="15">
+<Value>EventAlertNow</Value>
+</Value>
+<Value name="16">
+<Value>ErrorCode</Value>
+</Value>
+<Value name="17">
+<Value>EventValue2</Value>
+</Value>
+<Value name="18">
+<Value>EventValue3</Value>
+</Value>
+<Value name="19">
+<Value>EventValue4</Value>
+</Value>
+<Value name="20">
+<Value>EventValue5</Value>
+</Value>
+<Value name="21">
+<Value>Time</Value>
+</Value>
+<Value name="22">
+<Value>SessionId</Value>
+</Value>
+<Value name="23">
+<Value>AlertText</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Document name="EnsExportNotes.EnsExportProduction_2021-11-04 22-37-40_145+2.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportProduction_2021-11-04 22-37-40_145+2" description="Export Notes for export EnsExportProduction_2021-11-04 22-37-40_145+2">
+<![CDATA[<Deployment>
+<Creation>
+<Machine>JUUSO-PC</Machine>
+<Instance>TEAM_1</Instance>
+<Namespace>AMK</Namespace>
+<SourceProduction>AMKPKG.FoundationProduction</SourceProduction>
+<Username>SuperUser</Username>
+<UTC>2021-11-04 20:38:15.615</UTC>
+</Creation>
+<Notes>
+</Notes>
+<Contents>
+<ExportProject>EnsExportProduction_2021-11-04 22-37-40_145+2</ExportProject>
+<Item num="1">AMKPKG.Ens.AlertRoutingRule.CLS</Item>
+<Item num="2">AMKPKG.FoundationProduction.CLS</Item>
+<Item num="3">AMKPKG.RouterRoutingRule.CLS</Item>
+<Item num="4">MIT.Service.Util.FileGenerator.CLS</Item>
+<Item num="5">User.DataTransformation.CLS</Item>
+<Item num="6">User.PushOver.CLS</Item>
+<Item num="7">User.PushOverComponents.CLS</Item>
+</Contents>
+<ProductionClassInExport>AMKPKG.FoundationProduction</ProductionClassInExport>
+</Deployment>
+
+]]></ProjectTextDocument>
+</Document></Export>
